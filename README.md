@@ -3,8 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-blue.svg)](https://developer.chrome.com/docs/extensions/)
 [![Firefox](https://img.shields.io/badge/Firefox-Add--on-orange.svg)](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons)
+[🇨🇳 中文版](README_zh.md)
 
 > One-click tab organization for people who open too many tabs and never close them.
+
+[🇬🇧 English](README.md) | [🇨 中文版](README_zh.md)
 
 **FreeSpace** is a browser extension that transforms your chaotic tab overload into clean, categorized, searchable sessions. Inspired by OneTab but smarter — it auto-classifies tabs by domain, extracts keywords, warns about unsaved forms, and keeps full session history.
 
