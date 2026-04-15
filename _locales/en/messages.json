@@ -1,0 +1,18 @@
+{
+  "extName": {
+    "message": "FreeSpace — Smart Tab Space Manager",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "One-click tab organization with auto-classification, keyword summaries, multi-window vertical view, and session history.",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "Collect all tabs",
+    "description": "Action button tooltip"
+  },
+  "commandCollect": {
+    "message": "Collect all tabs",
+    "description": "Command description"
+  }
+}

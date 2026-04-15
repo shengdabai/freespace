@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreeSpace — 智能标签空间管理</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Toolbar -->
+  <header class="toolbar" role="banner">
+    <div class="toolbar-left">
+      <h1 class="app-title">FreeSpace</h1>
+      <div class="search-container" role="search">
+        <input type="search" id="search-input" class="search-input" placeholder="搜索标签页..." aria-label="搜索标签页" />
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button id="collapse-all-btn" class="collapse-btn" title="折叠/展开所有分组" aria-label="折叠所有分组">折叠所有</button>
+      <div class="density-toggle" role="radiogroup" aria-label="密度选择">
+        <button id="density-compact" class="density-btn" role="radio" aria-checked="false" title="紧凑">&#9776;</button>
+        <button id="density-comfortable" class="density-btn" role="radio" aria-checked="true" title="舒适">&#9783;</button>
+      </div>
+      <button id="theme-toggle" class="icon-btn" title="切换主题" aria-label="切换主题">&#x1F319;</button>
+      <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">&#9881;</button>
+    </div>
+  </header>
+
+  <!-- Undo Banner -->
+  <div id="undo-banner" class="undo-banner" role="status" aria-live="polite" hidden>
+    <span id="undo-text"></span>
+    <button id="undo-btn" class="btn-undo">撤回</button>
+    <button id="undo-dismiss" class="btn-undo-dismiss">&times;</button>
+  </div>
+
+  <!-- Main Layout: Left sidebar (sessions) + Right content (tabs) -->
+  <div class="main-layout">
+    <!-- Left: Session List (OneTab style) -->
+    <aside class="session-sidebar" role="navigation" aria-label="会话列表">
+      <div class="sidebar-header">
+        <h2>历史会话</h2>
+        <span id="session-total" class="sidebar-badge"></span>
+      </div>
+      <div id="sessions-list" class="session-list"></div>
+    </aside>
+
+    <!-- Right: Tab Content -->
+    <main class="workspace" role="main">
+      <!-- Session Header -->
+      <div class="session-header" id="session-header" hidden>
+        <div class="session-info">
+          <span id="session-count"></span>
+          <span id="session-date"></span>
+        </div>
+        <!-- Window Tabs -->
+        <div id="window-selector" class="window-selector" hidden>
+          <span class="window-selector-label">&#x1FA9F; 窗口：</span>
+          <div id="window-tabs" class="window-tabs" role="tablist"></div>
+        </div>
+      </div>
+
+      <div id="groups-container" class="groups-container" role="list" aria-label="标签页分组"></div>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <p class="empty-icon">&#x1F4C2;</p>
+        <p>还没有收集标签页。</p>
+        <p class="muted">点击浏览器工具栏的扩展图标即可开始收集。</p>
+      </div>
+
+      <div id="error-state" class="error-state" hidden>
+        <p>加载失败。</p>
+        <button id="retry-btn" class="btn-primary">重试</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Panel -->
+  <div id="settings-panel" class="settings-panel" role="dialog" aria-label="设置" aria-hidden="true" hidden>
+    <div class="settings-content">
+      <h2>设置</h2>
+      <div class="setting-row">
+        <label id="lang-label">语言 / Language</label>
+        <div class="lang-toggle">
+          <button id="lang-en" class="lang-btn" data-lang="en">English</button>
+          <button id="lang-zh" class="lang-btn" data-lang="zh">中文</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <label for="storage-info">存储用量</label>
+        <span id="storage-info" class="storage-value">&mdash;</span>
+      </div>
+      <div class="setting-row">
+        <button id="clear-data-btn" class="btn-danger">清除所有数据</button>
+      </div>
+      <div class="setting-actions">
+        <button id="settings-close" class="btn-primary">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="../lib/utils.js"></script>
+  <script type="module" src="../lib/classifier.js"></script>
+  <script type="module" src="../lib/summarizer.js"></script>
+  <script type="module" src="../lib/storage.js"></script>
+  <script type="module" src="../lib/layout.js"></script>
+  <script type="module" src="../lib/undo.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

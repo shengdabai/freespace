@@ -1,0 +1,17 @@
+{
+  "name": "freespace",
+  "version": "1.0.0",
+  "description": "智能标签空间管理 — 一键整理所有窗口标签页，自动分类、关键词摘要、多窗口纵向查看、会话历史",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "echo 'No linter configured'"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  },
+  "keywords": ["chrome-extension", "tab-manager", "productivity"],
+  "license": "MIT"
+}

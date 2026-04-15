@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="58" fill="#c8713a" fill-opacity="0.06" stroke="#c8713a" stroke-width="4"/>
+  <!-- Stacked tab rectangles -->
+  <rect x="18" y="18" width="52" height="36" rx="8" fill="#c8713a" fill-opacity="0.12" stroke="#c8713a" stroke-width="3"/>
+  <rect x="26" y="26" width="52" height="36" rx="8" fill="#c8713a" fill-opacity="0.25" stroke="#c8713a" stroke-width="3"/>
+  <rect x="34" y="34" width="52" height="36" rx="8" fill="#c8713a" fill-opacity="0.45" stroke="#c8713a" stroke-width="3"/>
+  <!-- Merge arrow -->
+  <path d="M72 76 L100 104 M78 80 L100 104 L72 98" stroke="#c8713a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="100" cy="104" r="6" fill="#c8713a"/>
+</svg>

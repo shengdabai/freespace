@@ -1,0 +1,18 @@
+{
+  "extName": {
+    "message": "FreeSpace — 智能标签空间管理",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "一键整理所有窗口标签页，自动按领域分类，关键词摘要，多窗口纵向查看，会话历史回溯。",
+    "description": "Extension description"
+  },
+  "actionTitle": {
+    "message": "收集所有标签页",
+    "description": "Action button tooltip"
+  },
+  "commandCollect": {
+    "message": "收集所有标签页",
+    "description": "Command description"
+  }
+}
