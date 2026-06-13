@@ -4,40 +4,43 @@ Smart tab manager: one keystroke files all tabs across all windows into clean, a
 
 ## Business Context
 
-- **Category:** browser productivity tool
-- **Audience:** knowledge workers and learners who spend most of their workflow in the browser.
+- **Category:** security and governance tool
+- **Audience:** builders and operators who need safer repositories, cleaner handoffs, and repeatable security checks.
 - **Repository status:** Public repository. Keep examples, docs, and issues free of credentials, private data, and machine-specific paths.
 - **Topics:** browser-extension, chrome-extension, firefox-addon, manifest-v3, productivity, tab-manager, onetab-alternative
 
 ## What This Project Is For
 
 - Smart tab manager: one keystroke files all tabs across all windows into clean, auto-classified, searchable sessions.
-- Compress repetitive browser work into a focused user interaction.
-- Keep user control and privacy boundaries clear.
+- Find repository risks early without exposing secrets in reports.
+- Make security review repeatable across public and private codebases.
 
 ## Where It Fits
 
-This repository focuses on reducing browser friction while keeping installation, permissions, and data boundaries visible.
+This repository belongs in the trust-and-safety layer of the workbench: it helps make code, configuration, and public handoffs safer before they are reused or shown to clients.
 
 ## Technical Overview
 
 - **Primary language:** JavaScript
-- **Detected stack:** JavaScript, Node.js / JavaScript tooling
+- **Detected stack:** JavaScript, Node.js
 - **Default branch:** `main`
 - **Visibility:** `PUBLIC`
 - **License:** MIT License
 
 ## Repository Map
 
+- `tests`
 - `LICENSE`
 - `README.md`
-- `README_zh.md`
 - `SECURITY.md`
 - `_locales`
 - `background.js`
 - `dashboard`
 - `icons`
-- `tests`
+- `lib`
+- `manifest.json`
+- `package-lock.json`
+- `package.json`
 
 ## Quick Start
 
@@ -45,26 +48,27 @@ Use the commands that match the current project state:
 
 ```bash
 npm install
-npm run test
 npm run lint
+npm run test
 ```
 
 | Command | Purpose |
 |---|---|
-| `npm run test` | vitest run |
+| `npm install` | Install project dependencies. |
 | `npm run lint` | echo 'No linter configured' |
+| `npm run test` | vitest run |
 
 ## Operating Notes
 
 - Keep real credentials out of the repository. Use local environment files, GitHub repository secrets, or the deployment platform secret manager.
 - If a `.env.example` file exists, treat it as documentation only; never commit filled-in `.env` files.
 - Before publishing screenshots, demos, or client examples, remove private names, internal paths, account IDs, and API endpoints.
-- The `Repository Hygiene` workflow is intended as a lightweight guardrail, not a replacement for product-specific tests.
+- The `Repository Hygiene` workflow is a lightweight guardrail, not a replacement for product-specific tests.
 
 ## Delivery Checklist
 
 - [ ] README describes the user, business outcome, and operating boundary.
-- [ ] Setup or preview commands are current.
+- [ ] Setup or preview commands are current and do not rely on private machine state.
 - [ ] No real secrets, private user data, or machine-local state are tracked.
 - [ ] Screenshots, demos, or sample outputs are safe to share publicly when the repository is public.
 - [ ] Product-specific tests or smoke checks are documented before production use.
