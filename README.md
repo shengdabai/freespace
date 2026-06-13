@@ -4,20 +4,20 @@ Smart tab manager: one keystroke files all tabs across all windows into clean, a
 
 ## Business Context
 
-- **Category:** security and governance tool
-- **Audience:** builders and operators who need safer repositories, cleaner handoffs, and repeatable security checks.
+- **Category:** browser productivity tool
+- **Audience:** knowledge workers and learners who spend most of their workflow in the browser.
 - **Repository status:** Public repository. Keep examples, docs, and issues free of credentials, private data, and machine-specific paths.
 - **Topics:** browser-extension, chrome-extension, firefox-addon, manifest-v3, productivity, tab-manager, onetab-alternative
 
 ## What This Project Is For
 
 - Smart tab manager: one keystroke files all tabs across all windows into clean, auto-classified, searchable sessions.
-- Find repository risks early without exposing secrets in reports.
-- Make security review repeatable across public and private codebases.
+- Compress repetitive browser work into a focused user interaction.
+- Keep installation, permissions, and data boundaries visible.
 
 ## Where It Fits
 
-This repository belongs in the trust-and-safety layer of the workbench: it helps make code, configuration, and public handoffs safer before they are reused or shown to clients.
+This repository reduces browser friction while keeping installation, permissions, and data boundaries visible.
 
 ## Technical Overview
 
