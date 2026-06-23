@@ -134,7 +134,8 @@ async function collectAllTabs() {
     if (formTabs.length > 0) {
       const formTabNames = formTabs.map((ft) => ft.tab.title || ft.tab.url).slice(0, 3);
       const confirmed = await new Promise((resolve) => {
-        chrome.notifications.create({
+        const FORM_WARN_ID = 'freespace-form-warning';
+        chrome.notifications.create(FORM_WARN_ID, {
           type: 'basic',
           iconUrl: 'icons/icon48.png',
           title: 'FreeSpace',
@@ -144,12 +145,14 @@ async function collectAllTabs() {
         });
 
         chrome.notifications.onButtonClicked.addListener(function handler(notificationId, buttonIndex) {
+          if (notificationId !== FORM_WARN_ID) return;
           chrome.notifications.onButtonClicked.removeListener(handler);
+          chrome.notifications.clear(FORM_WARN_ID);
           resolve(buttonIndex === 0);
         });
 
         setTimeout(() => {
-          chrome.notifications.clear('freespace-confirm');
+          chrome.notifications.clear(FORM_WARN_ID);
           resolve(false);
         }, 30000);
       });
