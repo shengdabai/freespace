@@ -10,7 +10,7 @@
     "lint": "echo 'No linter configured'"
   },
   "devDependencies": {
-    "vitest": "^3.0.0"
+    "vitest": "^5.0.5"
   },
   "keywords": ["chrome-extension", "tab-manager", "productivity"],
   "license": "MIT"
