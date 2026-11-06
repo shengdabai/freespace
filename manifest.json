@@ -13,7 +13,7 @@
       "128": "icons/icon128.png"
     }
   },
-  "permissions": ["tabs", "tabGroups", "storage", "activeTab", "alarms", "scripting", "notifications"],
+  "permissions": ["tabs", "storage", "activeTab", "alarms", "scripting", "notifications"],
   "commands": {
     "collect-tabs": {
       "suggested_key": {

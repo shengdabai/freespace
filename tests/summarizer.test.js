@@ -1,6 +1,7 @@
 // tests/summarizer.test.js — Tests for summarizer module
 
 import { describe, it, expect } from 'vitest';
+
 import { extractKeyword } from '../lib/summarizer.js';
 
 describe('extractKeyword', () => {
@@ -18,7 +19,7 @@ describe('extractKeyword', () => {
 
   it('should remove notification number prefixes', () => {
     expect(extractKeyword('(3) Gmail')).toBe('Gmail');
-    expect(extractKeyword('(12) Slack')).toBe('Slack');
+    expect(extractKeyword('(12) Slack')).toBe('Slack'); // Notification pattern strips (N) prefix
     expect(extractKeyword('(1) Inbox | Gmail')).toBe('Inbox');
   });
 
@@ -26,11 +27,23 @@ describe('extractKeyword', () => {
     const longTitle = 'This is a very long title that should definitely be truncated because it goes on and on';
     const result = extractKeyword(longTitle);
     expect(result.length).toBe(50);
-    expect(result.endsWith('…')).toBe(true);
+    expect(result.endsWith('\u2026')).toBe(true);
   });
 
   it('should preserve short titles unchanged', () => {
     expect(extractKeyword('Hello')).toBe('Hello');
     expect(extractKeyword('feat: add login page')).toBe('feat: add login page');
   });
+});
+
+
+it('truncates emoji by Unicode code point without splitting a character', () => {
+  const result = extractKeyword('😀'.repeat(60));
+  expect(Array.from(result)).toHaveLength(50);
+  expect(result).toBe('😀'.repeat(49) + '…');
+});
+
+it('removes suffixes present only in the production suffix list', () => {
+  expect(extractKeyword('(2) Planning - Google Docs')).toBe('Planning');
+  expect(extractKeyword('Design | Slack')).toBe('Design');
 });

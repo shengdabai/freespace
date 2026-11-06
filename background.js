@@ -4,7 +4,8 @@ import { isInternalUrl, isOwnDashboardUrl, extractRootDomain } from './lib/utils
 import { classifyTabs, loadCustomRules } from './lib/classifier.js';
 import { extractKeyword } from './lib/summarizer.js';
 import { saveSession } from './lib/storage.js';
-import { setLastCollection } from './lib/undo.js';
+import { setLastCollection, clearUndo, getUndoStatus, restoreLastSession } from './lib/undo.js';
+import { confirmCloseTabs } from './lib/confirm.js';
 
 let isCollecting = false;
 
@@ -133,29 +134,7 @@ async function collectAllTabs() {
 
     if (formTabs.length > 0) {
       const formTabNames = formTabs.map((ft) => ft.tab.title || ft.tab.url).slice(0, 3);
-      const confirmed = await new Promise((resolve) => {
-        const FORM_WARN_ID = 'freespace-form-warning';
-        chrome.notifications.create(FORM_WARN_ID, {
-          type: 'basic',
-          iconUrl: 'icons/icon48.png',
-          title: 'FreeSpace',
-          message: `${formTabs.length} 个标签页可能有未保存的数据：${formTabNames.join(', ')}。是否继续关闭？`,
-          buttons: [{ title: '继续关闭' }, { title: '取消' }],
-          requireInteraction: true,
-        });
-
-        chrome.notifications.onButtonClicked.addListener(function handler(notificationId, buttonIndex) {
-          if (notificationId !== FORM_WARN_ID) return;
-          chrome.notifications.onButtonClicked.removeListener(handler);
-          chrome.notifications.clear(FORM_WARN_ID);
-          resolve(buttonIndex === 0);
-        });
-
-        setTimeout(() => {
-          chrome.notifications.clear(FORM_WARN_ID);
-          resolve(false);
-        }, 30000);
-      });
+      const confirmed = await confirmCloseTabs(`${formTabs.length} 个标签页可能有未保存的数据：${formTabNames.join(', ')}。是否继续关闭？`);
 
       if (!confirmed) {
         chrome.alarms.clear('keepalive');
@@ -260,17 +239,21 @@ async function collectAllTabs() {
       return;
     }
 
-    // Set undo state (5 second window)
-    setLastCollection(validTabs);
+    // Only tabs actually removed belong in this collection’s undo record.
+    await clearUndo();
+    const removedTabs = [];
 
     // Remove non-pinned tabs across ALL windows
     for (const tab of allNormalTabs) {
       try {
         await chrome.tabs.remove(tab.id);
+        removedTabs.push(tab);
       } catch (err) {
         console.error('Failed to remove tab:', tab.id, err);
       }
     }
+
+    if (removedTabs.length) await setLastCollection(removedTabs);
 
     // Open dashboard
     chrome.tabs.create({
@@ -304,4 +287,12 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'keepalive') {
     // No-op, just keeps the worker alive
   }
+});
+
+// Undo is owned by this worker; dashboard module instances do not share memory.
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  const actions = { 'freespace:undo-status': getUndoStatus, 'freespace:undo-restore': restoreLastSession, 'freespace:undo-clear': clearUndo };
+  if (sender.id !== chrome.runtime.id || !Object.hasOwn(actions, message?.type)) return false;
+  actions[message.type]().then(result => sendResponse({ok:true, result})).catch(() => sendResponse({ok:false}));
+  return true;
 });
