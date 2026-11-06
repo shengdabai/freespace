@@ -5,7 +5,7 @@ import { classifyTabs, loadCustomRules } from '../lib/classifier.js';
 import { extractKeyword } from '../lib/summarizer.js';
 import { getLatestSession, getSessions, deleteSession, getStorageUsage, getSetting, saveSetting } from '../lib/storage.js';
 import { initVirtualScroll, setDensity, getDensity } from '../lib/layout.js';
-import { canUndo, restoreLastSession, clearUndo, getTimeRemaining } from '../lib/undo.js';
+
 import { t, setLanguage, detectLanguage, getLanguage } from '../lib/i18n.js';
 
 // ===== DOM Elements =====
@@ -471,17 +471,21 @@ function showError() {
 }
 
 // ===== Undo =====
-function updateUndoState() {
-  if (canUndo()) {
-    undoBanner.hidden = false;
-    const remaining = getTimeRemaining();
-    undoText.textContent = t('undoMessage', remaining);
-    if (undoInterval) clearInterval(undoInterval);
-    undoInterval = setInterval(() => {
-      if (!canUndo()) { undoBanner.hidden = true; clearInterval(undoInterval); return; }
-      undoText.textContent = t('undoMessage', getTimeRemaining());
-    }, 1000);
-  } else { undoBanner.hidden = true; }
+async function requestUndo(type) {
+  const response = await chrome.runtime.sendMessage({type: 'freespace:undo-' + type});
+  if (!response?.ok) throw new Error('Undo operation failed');
+  return response.result;
+}
+async function updateUndoState() {
+  if (undoInterval) { clearInterval(undoInterval); undoInterval = null; }
+  try {
+    const status = await requestUndo('status');
+    undoBanner.hidden = !status.canUndo;
+    if (status.canUndo) {
+      undoText.textContent = t('undoMessage', status.remaining);
+      undoInterval = setTimeout(updateUndoState, 1000);
+    }
+  } catch { undoBanner.hidden = true; }
 }
 
 // ===== Settings =====
@@ -539,17 +543,18 @@ function bindEvents() {
 
   undoBtn.addEventListener('click', async () => {
     try {
-      await restoreLastSession();
+      const result = await requestUndo('restore');
+      if (result.failed || !result.restored) { showToast(t('undoFailed')); await updateUndoState(); return; }
       undoBanner.hidden = true;
       if (undoInterval) clearInterval(undoInterval);
       showToast(t('undoSuccess'));
     } catch { showToast(t('undoFailed')); }
   });
 
-  undoDismiss.addEventListener('click', () => {
+  undoDismiss.addEventListener('click', async () => {
     undoBanner.hidden = true;
     if (undoInterval) clearInterval(undoInterval);
-    clearUndo();
+    try { await requestUndo('clear'); } catch { showToast(t('undoFailed')); }
   });
 
   themeToggle.addEventListener('click', async () => {

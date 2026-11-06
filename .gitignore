@@ -1,19 +1,4 @@
-.env
-.env.*
-!.env.example
-!.env.*.example
 node_modules/
 *.log
 .DS_Store
 .omc/
-# Codex governance: local secrets and machine state
-*.pem
-*.p12
-*.pfx
-id_rsa
-id_dsa
-.npmrc
-.codex/
-.claude/local/
-*-todo.md
-tab-merge-design/
